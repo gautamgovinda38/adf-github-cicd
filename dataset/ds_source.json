@@ -2,7 +2,7 @@
 	"name": "ds_source",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_dev_cicd",
+			"referenceName": "ls_az_datalake_kv",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],

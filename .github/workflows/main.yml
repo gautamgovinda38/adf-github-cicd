@@ -67,6 +67,6 @@ jobs:
           dataFactoryName: adf-test-cicd-south-india
           armTemplateFile: ARMTemplateForFactory.json
           armTemplateParametersFile: ARMTemplateParametersForFactory.json
-          additionalParameters: ls_dev_cicd_accountKey=${{ secrets.TEST_DATALAKE_SECRET }} ls_dev_cicd_properties_typeProperties_url=https://dltestcicd.dfs.core.windows.net/
+          additionalParameters: ls_az_data_lake_properties_typeProperties_baseUrl=https://akv-adf-test-cicd.vault.azure.net/ ls_az_datalake_kv_properties_typeProperties_url=https://dltestcicd.dfs.core.windows.net
       
           # skipAzModuleInstallation:  # Parameters which skip the Az module installation. Optional, default is false.      
