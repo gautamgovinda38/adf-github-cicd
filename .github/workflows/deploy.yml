@@ -1,19 +1,12 @@
 name: Deploy ADF Templates
 on:
-    workflow_run:
-        workflows: ["Validate and Export ADF Templates"]
-        types: [completed]
-        branches: [main]
     workflow_dispatch:
         inputs:
             environment:
                 description: "Deployment environment"
                 required: true
                 default: "test"
-                type: choice
-                options:
-                    - test
-                    - production
+
 permissions:
     id-token: write
     contents: read
