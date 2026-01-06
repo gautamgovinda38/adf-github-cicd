@@ -47,8 +47,8 @@ jobs:
               with:
                   resourceGroupName: rg-test-cicd-south-india
                   dataFactoryName: adf-test-cicd-south-india
-                  armTemplateFile: ARMTemplateForFactory.json
-                  armTemplateParametersFile: ARMTemplateParametersForFactory.json
+                  armTemplateFile: ${{github.workspace}}/build/ExportedArmTemplate/ARMTemplateForFactory.json
+                  armTemplateParametersFile: ${{github.workspace}}/build/ExportedArmTemplate/ARMTemplateParametersForFactory.json
                   additionalParameters: ls_az_data_lake_properties_typeProperties_baseUrl=https://akv-adf-test-cicd.vault.azure.net/ ls_az_datalake_kv_properties_typeProperties_url=https://dltestcicd.dfs.core.windows.net
 
                   # skipAzModuleInstallation:  # Parameters which skip the Az module installation. Optional, default is false.
