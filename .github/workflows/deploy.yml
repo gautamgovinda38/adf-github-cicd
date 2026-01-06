@@ -1,0 +1,48 @@
+name: Deploy ADF Templates
+on:
+    workflow_run:
+        workflows: ["Validate and Export ADF Templates"]
+        types: [completed]
+        branches: [main]
+    workflow_dispatch:
+        inputs:
+            environment:
+                description: "Deployment environment"
+                required: true
+                default: "test"
+                type: choice
+                options:
+                    - test
+                    - production
+permissions:
+    id-token: write
+    contents: read
+
+jobs:
+    release:
+        runs-on: ubuntu-latest
+        steps:
+            # we 1st download the previously uploaded artifact so we can leverage it later in the release job
+            - name: Download a Build Artifact
+              uses: actions/download-artifact@v4
+              with:
+                  name: ExportedArmTemplate # (5) Artifact name
+
+            - name: Login via Az module
+              uses: azure/login@v1
+              with:
+                  client-id: ${{ secrets.AZURE_CLIENT_ID }}
+                  tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+                  subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+                  enable-AzPSSession: true
+
+            - name: data-factory-deploy
+              uses: Azure/data-factory-deploy-action@v1.2.0
+              with:
+                  resourceGroupName: rg-test-cicd-south-india
+                  dataFactoryName: adf-test-cicd-south-india
+                  armTemplateFile: ARMTemplateForFactory.json
+                  armTemplateParametersFile: ARMTemplateParametersForFactory.json
+                  additionalParameters: ls_az_data_lake_properties_typeProperties_baseUrl=https://akv-adf-test-cicd.vault.azure.net/ ls_az_datalake_kv_properties_typeProperties_url=https://dltestcicd.dfs.core.windows.net
+
+                  # skipAzModuleInstallation:  # Parameters which skip the Az module installation. Optional, default is false.
